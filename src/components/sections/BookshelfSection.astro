@@ -1,0 +1,106 @@
+---
+import BookCard from '@/components/cards/BookCard.astro';
+import Section from '@/components/ui/Section.astro';
+import { books, bookShelves } from '@/data/books';
+import { SECTION } from '@/data/navigation';
+
+const shelves = bookShelves
+  .map((shelf) => ({ ...shelf, books: books.filter((book) => book.status === shelf.status) }))
+  .filter((shelf) => shelf.books.length > 0);
+---
+
+<Section section={SECTION.books}>
+  <p class="intro" data-reveal>
+    Technical books I’ve read, am reading right now, and have lined up next.
+  </p>
+
+  {shelves.map((shelf) => (
+    <section class="shelf" aria-labelledby={`shelf-${shelf.status}`}>
+      <h3 id={`shelf-${shelf.status}`} class="shelf-title" data-status={shelf.status} data-reveal>
+        {shelf.title}
+        <span class="shelf-count">{shelf.books.length}</span>
+      </h3>
+      <ul class="books" role="list">
+        {shelf.books.map((book, index) => (
+          <li data-reveal style={{ '--reveal-delay': `${index * 80}ms` }}>
+            <BookCard book={book} />
+          </li>
+        ))}
+      </ul>
+    </section>
+  ))}
+</Section>
+
+<style>
+  .intro {
+    max-width: 36rem;
+    margin-block-end: 2rem;
+  }
+
+  .shelf + .shelf {
+    margin-block-start: 2.5rem;
+  }
+
+  .shelf-title {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-block-end: 1rem;
+    font-size: var(--text-base);
+    font-weight: 600;
+  }
+
+  /* Status dot: filled = read, pulsing = in progress, outlined = planned. */
+  .shelf-title::before {
+    content: '';
+    width: 0.55rem;
+    height: 0.55rem;
+    border: 1px solid var(--color-accent);
+    border-radius: 50%;
+  }
+
+  .shelf-title[data-status='read']::before {
+    background-color: var(--color-accent);
+  }
+
+  .shelf-title[data-status='reading']::before {
+    background-color: rgb(var(--accent-rgb) / 0.5);
+  }
+
+  .shelf-title[data-status='planned']::before {
+    border-color: var(--color-text-muted);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .shelf-title[data-status='reading']::before {
+      animation: pulse 2.4s var(--ease-out) infinite;
+    }
+  }
+
+  .shelf-count {
+    padding: 0 0.45rem;
+    border-radius: var(--radius-full);
+    background-color: var(--color-accent-soft);
+    color: var(--color-accent);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 500;
+  }
+
+  .books {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(8.5rem, 100%), 1fr));
+    gap: 1rem;
+  }
+
+  @keyframes pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgb(var(--accent-rgb) / 0.55);
+    }
+
+    70%,
+    100% {
+      box-shadow: 0 0 0 0.45rem rgb(var(--accent-rgb) / 0);
+    }
+  }
+</style>

@@ -1,0 +1,102 @@
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/*
+ * Clickable elements — every link / element with a mini-icon gets a soft glow and a slight
+ * scale on hover (pointer devices) and on keyboard focus.
+ *   .glow-box  → bordered boxes: cards, chips, buttons
+ *   .glow-text → inline text / icon links
+ * Components can tune the scale locally via `--hover-scale`.
+ */
+.glow-box,
+.glow-text {
+  transition:
+    scale var(--duration) var(--ease-out),
+    box-shadow var(--duration) var(--ease-out),
+    border-color var(--duration) var(--ease-out),
+    background-color var(--duration) var(--ease-out),
+    color var(--duration) var(--ease-out),
+    text-shadow var(--duration) var(--ease-out);
+}
+
+.glow-text {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+  transform-origin: left center;
+}
+
+.glow-text svg {
+  transition: filter var(--duration) var(--ease-out);
+}
+
+.glow-box:focus-visible {
+  scale: var(--hover-scale);
+  box-shadow: var(--glow-box);
+  border-color: rgb(var(--accent-rgb) / 0.45);
+}
+
+.glow-text:focus-visible {
+  scale: var(--hover-scale);
+  color: var(--color-accent);
+  text-shadow: var(--glow-text);
+}
+
+.glow-text:focus-visible svg {
+  filter: var(--glow-icon);
+}
+
+@media (hover: hover) {
+  .glow-box:hover {
+    scale: var(--hover-scale);
+    box-shadow: var(--glow-box);
+    border-color: rgb(var(--accent-rgb) / 0.45);
+  }
+
+  .glow-text:hover {
+    scale: var(--hover-scale);
+    color: var(--color-accent);
+    text-shadow: var(--glow-text);
+  }
+
+  .glow-text:hover svg {
+    filter: var(--glow-icon);
+  }
+}
+
+/*
+ * Reveal-on-scroll — progressive enhancement driven by `src/scripts/reveal.ts`.
+ * Content stays visible when JavaScript is off (`.js` is set by an inline script) or when the
+ * user prefers reduced motion. Put `data-reveal` on wrappers, not on clickable elements.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  .js [data-reveal] {
+    opacity: 0;
+    translate: 0 1.25rem;
+    transition:
+      opacity var(--duration-slow) var(--ease-out),
+      translate var(--duration-slow) var(--ease-out);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+
+  .js [data-reveal].is-revealed {
+    opacity: 1;
+    translate: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glow-box,
+  .glow-text {
+    --hover-scale: 1;
+  }
+}

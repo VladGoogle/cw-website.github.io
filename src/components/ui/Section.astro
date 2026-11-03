@@ -1,0 +1,83 @@
+---
+import { navigation } from '@/data/navigation';
+import type { NavItem } from '@/types/cv';
+
+interface Props {
+  section: NavItem;
+  /** Heading text; defaults to the navigation label. */
+  title?: string;
+}
+
+const { section, title = section.label } = Astro.props;
+const headingId = `${section.id}-heading`;
+const number = String(navigation.indexOf(section) + 1).padStart(2, '0');
+---
+
+<section id={section.id} class="section" aria-labelledby={headingId}>
+  <div class="section-header">
+    <h2 id={headingId} class="section-title">
+      <span class="section-index" aria-hidden="true">
+        {number}.
+      </span>
+      {title}
+    </h2>
+  </div>
+  <slot />
+</section>
+
+<style>
+  .section {
+    padding-block-end: 5rem;
+  }
+
+  /* Mobile: headings stick to the top while their section scrolls by. */
+  .section-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    margin-inline: calc(var(--gutter) * -1);
+    margin-block-end: 1.25rem;
+    padding: 1.1rem var(--gutter);
+    background-color: var(--color-bg-translucent);
+    backdrop-filter: blur(10px);
+  }
+
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: var(--text-sm);
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background-color: var(--color-border);
+  }
+
+  .section-index {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    letter-spacing: 0;
+    color: var(--color-accent);
+  }
+
+  @media (min-width: 64rem) {
+    .section {
+      scroll-margin-top: var(--page-padding-block);
+      padding-block-end: 7rem;
+    }
+
+    .section-header {
+      position: static;
+      margin: 0 0 2rem;
+      padding: 0;
+      background: none;
+      backdrop-filter: none;
+    }
+  }
+</style>

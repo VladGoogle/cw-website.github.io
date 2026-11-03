@@ -1,0 +1,25 @@
+---
+import CertificationCard from '@/components/cards/CertificationCard.astro';
+import Section from '@/components/ui/Section.astro';
+import { certifications } from '@/data/certifications';
+import { SECTION } from '@/data/navigation';
+---
+
+<Section section={SECTION.certifications}>
+  <ul class="certifications" role="list">
+    {certifications.map((certification, index) => (
+      <li data-reveal style={{ '--reveal-delay': `${index * 90}ms` }}>
+        <CertificationCard certification={certification} />
+      </li>
+    ))}
+  </ul>
+</Section>
+
+<style>
+  /* Side by side only when each card gets enough room (e.g. tablets), stacked otherwise. */
+  .certifications {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(21rem, 100%), 1fr));
+    gap: 1.25rem;
+  }
+</style>

@@ -1,0 +1,64 @@
+---
+import '@fontsource-variable/inter';
+import '@fontsource-variable/jetbrains-mono';
+import '@/styles/global.css';
+
+import BaseHead from '@/components/layout/BaseHead.astro';
+import Spotlight from '@/components/layout/Spotlight.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  noindex?: boolean;
+}
+
+const { title, description, noindex } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Enables JS-only enhancements (reveal animations) before first paint. -->
+    <script is:inline>
+      document.documentElement.classList.add('js');
+    </script>
+    <BaseHead title={title} description={description} noindex={noindex} />
+  </head>
+  <body>
+    <a href="#content" class="skip-link">
+      Skip to content
+    </a>
+    <Spotlight />
+    <slot />
+
+    <script>
+      import { initReveal } from '@/scripts/reveal';
+
+      initReveal();
+    </script>
+  </body>
+</html>
+
+<style>
+  .skip-link {
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    z-index: 100;
+    padding: 0.6rem 1rem;
+    border: 1px solid var(--color-accent);
+    border-radius: var(--radius-md);
+    background-color: var(--color-bg);
+    color: var(--color-accent);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    box-shadow: var(--glow-box);
+    translate: 0 -200%;
+  }
+
+  .skip-link:focus-visible {
+    translate: none;
+  }
+</style>

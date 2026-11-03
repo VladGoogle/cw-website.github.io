@@ -1,0 +1,98 @@
+import type { Experience } from '@/types/cv';
+
+export const experience: Experience[] = [
+  {
+    company: 'IT-Dimension',
+    role: 'Backend Developer (Node.js)',
+    start: { label: 'Nov 2023', iso: '2023-11' },
+    projects: [
+      {
+        name: 'E-commerce Platform',
+        isNda: true,
+        summary: "E-commerce portal specializing in women's cosmetics.",
+        responsibilities: [
+          'Developed and maintained backend services for core business domains, including on-demand and scheduled 1C database synchronization, advanced catalog filtering, and complex promotional logic for testers and gifts.',
+          'The agentic development workflow relied extensively on Claude Agents, governed by guardrails, skills, and conventions continuously managed via CLAUDE.md files.',
+        ],
+        stack: [
+          'NestJS',
+          'Claude',
+          'Docker',
+          'PostgreSQL',
+          'Redis',
+          'RabbitMQ',
+          'AWS (SES, S3, ECS, EventBridge, Lambda)',
+          'Grafana',
+          'Swagger',
+        ],
+      },
+      {
+        name: 'SensOPT',
+        summary:
+          'A web app for gathering and aggregating values from sensors (weather, agriculture, etc.).',
+        responsibilities: [
+          'Helped design backend logic for new features.',
+          'Developed a smooth integration for asynchronous data aggregation.',
+        ],
+        stack: ['NestJS', 'Kafka', 'AWS (EC2, SQS, Lambda)', 'GitHub Actions', 'TimescaleDB'],
+      },
+      {
+        name: 'AI Project',
+        isNda: true,
+        summary: 'Workforce management web portal.',
+        responsibilities: [
+          'Designed and developed the entire backend architecture from scratch for a multi-tenant system enabling company registration, employee management, contact information handling, and working schedule/shift planning with real-time updates and data manipulation.',
+          'Built a robust and reliable architecture tailored to an error-prone domain, ensuring high availability and data consistency.',
+          'Implemented an AI-powered employee assistant integrated with WhatsApp via Whapi, leveraging LangChain and ChatGPT for request handling, and Pinecone for document storage and retrieval-augmented generation (RAG).',
+          'Set up monitoring, logging, and CI/CD pipelines to ensure observability and streamlined delivery.',
+        ],
+        stack: [
+          'NestJS',
+          'PostgreSQL',
+          'Prisma',
+          'Redis',
+          'BullMQ',
+          'DigitalOcean',
+          'WebSockets',
+          'LangChain',
+          'Whapi',
+          'Pinecone',
+          'LangSmith',
+          'PostGIS',
+          'Alloy',
+          'Grafana',
+          'Docker',
+          'GitHub Actions',
+          'Sentry',
+        ],
+      },
+      {
+        name: 'Automated Posting Platform',
+        isNda: true,
+        summary: 'An automated social media posting platform.',
+        responsibilities: [
+          'Designed and developed the entire backend architecture from scratch for a multi-tenant system enabling company and workspace management, user invitations, and fine-grained role-based access control.',
+          'Implemented functionality for connecting social network accounts (e.g., Instagram, LinkedIn, Facebook, YouTube), creating and scheduling posts, calendar-based planning, and real-time content updates.',
+          'Architected and implemented a scalable ABAC authorization system to manage roles and permissions across workspaces.',
+          'Integrated Late for social account connections and automated publishing workflows.',
+          'Established CI/CD pipelines, background job processing, and monitoring to ensure reliability and scalability.',
+        ],
+        stack: [
+          'NestJS',
+          'PostgreSQL',
+          'TypeORM',
+          'Redis',
+          'BullMQ',
+          'AWS',
+          'WebSockets',
+          'Late',
+          'Polotno',
+          'Docker',
+          'GitHub Actions',
+          'Sentry',
+          'Stripe',
+        ],
+      },
+    ],
+  },
+];

@@ -1,0 +1,57 @@
+---
+import { getImage } from 'astro:assets';
+
+import profilePhoto from '@/assets/images/profile.jpg';
+import { education } from '@/data/education';
+import { profile } from '@/data/profile';
+import { withBase } from '@/utils/url';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Exclude the page from search engines (e.g. the 404 page). */
+  noindex?: boolean;
+}
+
+const { title, description, noindex = false } = Astro.props;
+
+// Pages excluded from indexing (404) get neither a canonical URL nor structured data.
+const canonicalUrl =
+  Astro.site && !noindex ? new URL(Astro.url.pathname, Astro.site).href : undefined;
+const socialImage = await getImage({ src: profilePhoto, width: 512, height: 512, format: 'jpg' });
+const socialImageUrl = Astro.site ? new URL(socialImage.src, Astro.site).href : socialImage.src;
+const linkedIn = profile.contacts.find((contact) => contact.href.includes('linkedin.com'));
+
+const personSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: profile.fullName,
+  jobTitle: profile.role,
+  description,
+  image: socialImageUrl,
+  ...(canonicalUrl && { url: canonicalUrl }),
+  ...(linkedIn && { sameAs: [linkedIn.href] }),
+  address: { '@type': 'PostalAddress', addressLocality: profile.location },
+  alumniOf: education.map((item) => ({ '@type': 'CollegeOrUniversity', name: item.institution })),
+};
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+{canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
+{noindex && <meta name="robots" content="noindex" />}
+<meta name="generator" content={Astro.generator} />
+
+<link rel="icon" type="image/svg+xml" href={withBase('favicon.svg')} />
+<meta name="theme-color" content="#0b1221" />
+<meta name="color-scheme" content="dark" />
+
+<meta property="og:type" content="profile" />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={socialImageUrl} />
+<meta property="og:image:alt" content={profile.photoAlt} />
+{canonicalUrl && <meta property="og:url" content={canonicalUrl} />}
+<meta name="twitter:card" content="summary" />
+
+{!noindex && <script type="application/ld+json" set:html={JSON.stringify(personSchema)} />}

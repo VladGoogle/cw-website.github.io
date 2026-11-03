@@ -1,0 +1,46 @@
+---
+import ExternalLink from '@/components/ui/ExternalLink.astro';
+import { profile } from '@/data/profile';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <p>
+    Layout inspired by{' '}
+    <ExternalLink href="https://brittanychiang.com" class="footer-link glow-text">
+      Brittany Chiang
+    </ExternalLink>
+  </p>
+  <p>
+    Built with{' '}
+    <ExternalLink href="https://astro.build" class="footer-link glow-text">
+      Astro
+    </ExternalLink>{' '}
+    and set in Inter &amp; JetBrains Mono
+  </p>
+  <p class="copyright">
+    © {year} {profile.fullName}
+  </p>
+</footer>
+
+<style>
+  .footer {
+    display: grid;
+    gap: 0.4rem;
+    max-width: 28rem;
+    padding-block-end: 4rem;
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+  }
+
+  .footer-link {
+    color: var(--color-text-strong);
+    font-weight: 500;
+  }
+
+  .copyright {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+  }
+</style>

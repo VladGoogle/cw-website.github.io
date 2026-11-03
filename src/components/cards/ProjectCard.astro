@@ -1,0 +1,105 @@
+---
+import Tag from '@/components/ui/Tag.astro';
+import type { Project } from '@/types/cv';
+
+interface Props {
+  project: Project;
+}
+
+const { project } = Astro.props;
+---
+
+<article class="project">
+  <header class="project-header">
+    <h4 class="project-name">{project.name}</h4>
+    {project.isNda && (
+      <span class="nda" title="Client name withheld under a non-disclosure agreement">
+        NDA
+      </span>
+    )}
+  </header>
+  <p class="project-summary">{project.summary}</p>
+
+  <ul class="responsibilities" role="list">
+    {project.responsibilities.map((item) => (
+      <li>{item}</li>
+    ))}
+  </ul>
+
+  <ul class="stack" role="list" aria-label="Tech stack">
+    {project.stack.map((tech) => (
+      <li>
+        <Tag>{tech}</Tag>
+      </li>
+    ))}
+  </ul>
+</article>
+
+<style>
+  .project {
+    padding: 1.25rem 1.25rem 1.4rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background-color: var(--color-surface);
+  }
+
+  .project-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .project-name {
+    font-size: var(--text-lg);
+    font-weight: 600;
+  }
+
+  .nda {
+    padding: 0.1rem 0.45rem;
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-sm);
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.08em;
+  }
+
+  .project-summary {
+    margin-block-start: 0.25rem;
+    color: var(--color-text-strong);
+    opacity: 0.85;
+  }
+
+  .responsibilities {
+    display: grid;
+    gap: 0.5rem;
+    margin-block-start: 1rem;
+    font-size: 0.9375rem;
+  }
+
+  .responsibilities li {
+    position: relative;
+    padding-inline-start: 1.25rem;
+  }
+
+  .responsibilities li::before {
+    content: '▹';
+    position: absolute;
+    left: 0;
+    color: var(--color-accent);
+  }
+
+  .stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    margin-block-start: 1.1rem;
+  }
+
+  @media (min-width: 40rem) {
+    .project {
+      padding: 1.5rem 1.6rem 1.6rem;
+    }
+  }
+</style>

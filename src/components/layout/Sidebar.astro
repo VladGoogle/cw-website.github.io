@@ -1,0 +1,276 @@
+---
+import { Image } from 'astro:assets';
+import { Icon } from 'astro-icon/components';
+
+import profilePhoto from '@/assets/images/profile.jpg';
+import ExternalLink from '@/components/ui/ExternalLink.astro';
+import { navigation } from '@/data/navigation';
+import { profile } from '@/data/profile';
+import { withBase } from '@/utils/url';
+---
+
+<header class="sidebar">
+  <div class="intro">
+    <div class="identity">
+      <div data-reveal>
+        <Image
+          src={profilePhoto}
+          alt={profile.photoAlt}
+          width={112}
+          height={112}
+          densities={[1, 2]}
+          loading="eager"
+          fetchpriority="high"
+          class="avatar"
+        />
+      </div>
+      <div>
+        <h1 class="name" data-reveal style={{ '--reveal-delay': '80ms' }}>
+          {profile.fullName}
+        </h1>
+        <p class="role" data-reveal style={{ '--reveal-delay': '140ms' }}>
+          {profile.role}
+        </p>
+      </div>
+    </div>
+    <p class="tagline" data-reveal style={{ '--reveal-delay': '200ms' }}>
+      {profile.tagline}
+    </p>
+
+    <nav class="nav" aria-label="Page sections" data-reveal style={{ '--reveal-delay': '260ms' }}>
+      <ul role="list">
+        {navigation.map((item) => (
+          <li>
+            <a href={`#${item.id}`} class="nav-link glow-text" data-nav-link>
+              <span class="nav-indicator" aria-hidden="true" />
+              <span>{item.label}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+
+  <div class="connect" data-reveal style={{ '--reveal-delay': '320ms' }}>
+    <ul class="contacts" role="list" aria-label="Contact details">
+      {profile.contacts.map((contact) => {
+        const Link = contact.external ? ExternalLink : 'a';
+        return (
+          <li>
+            <Link href={contact.href} class="contact glow-text" title={contact.title}>
+              <Icon name={contact.icon} class="contact-icon" aria-hidden="true" />
+              <span>{contact.label}</span>
+            </Link>
+          </li>
+        );
+      })}
+    </ul>
+
+    <a href={withBase(profile.cvFile)} class="cv-button glow-box" download>
+      <Icon name="tabler:download" class="cv-icon" aria-hidden="true" />
+      Download CV <span class="cv-format">(PDF)</span>
+    </a>
+  </div>
+</header>
+
+<script>
+  import { initScrollSpy } from '@/scripts/scroll-spy';
+
+  initScrollSpy();
+</script>
+
+<style>
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+    padding-block: 3.5rem 2rem;
+  }
+
+  .avatar {
+    width: 6.5rem;
+    height: 6.5rem;
+    object-fit: cover;
+    border: 1px solid var(--color-border-strong);
+    border-radius: 50%;
+    box-shadow: 0 0 0 6px rgb(var(--accent-rgb) / 0.06);
+  }
+
+  /* Photo above the name on small screens, beside it on desktop. */
+  .identity {
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  .name {
+    font-size: var(--text-display);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.1;
+  }
+
+  .role {
+    margin-block-start: 0.6rem;
+    color: var(--color-text-strong);
+    font-size: var(--text-xl);
+    font-weight: 500;
+  }
+
+  .tagline {
+    max-width: 24rem;
+    margin-block-start: 1.25rem;
+  }
+
+  /* Section navigation (desktop only — mobile uses sticky section headings). */
+  .nav {
+    display: none;
+  }
+
+  .nav-link {
+    gap: 1rem;
+    padding-block: 0.45rem;
+    color: var(--color-text-muted);
+    font-size: var(--text-xs);
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .nav-indicator {
+    width: 2rem;
+    height: 1px;
+    background-color: currentColor;
+    transition:
+      width var(--duration) var(--ease-out),
+      background-color var(--duration) var(--ease-out),
+      box-shadow var(--duration) var(--ease-out);
+  }
+
+  .nav-link[aria-current='true'] {
+    color: var(--color-text-strong);
+  }
+
+  .nav-link[aria-current='true'] .nav-indicator,
+  .nav-link:focus-visible .nav-indicator {
+    width: 4rem;
+    background-color: var(--color-accent);
+    box-shadow: 0 0 8px rgb(var(--accent-rgb) / 0.6);
+  }
+
+  @media (hover: hover) {
+    .nav-link:hover .nav-indicator {
+      width: 4rem;
+      background-color: var(--color-accent);
+      box-shadow: 0 0 8px rgb(var(--accent-rgb) / 0.6);
+    }
+  }
+
+  /* Contacts & CV download */
+  .contacts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(16rem, 100%), 1fr));
+    gap: 0.55rem 1.5rem;
+  }
+
+  .contact {
+    font-size: var(--text-sm);
+    overflow-wrap: anywhere;
+  }
+
+  .contact-icon {
+    flex: none;
+    width: 1.15rem;
+    height: 1.15rem;
+    color: var(--color-accent);
+  }
+
+  .cv-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin-block-start: 1.5rem;
+    padding: 0.7rem 1.15rem;
+    border: 1px solid rgb(var(--accent-rgb) / 0.4);
+    border-radius: var(--radius-md);
+    background-color: var(--color-accent-soft);
+    color: var(--color-accent);
+    font-size: var(--text-sm);
+    font-weight: 600;
+  }
+
+  .cv-icon {
+    width: 1.1rem;
+    height: 1.1rem;
+  }
+
+  .cv-format {
+    opacity: 0.7;
+    font-weight: 500;
+  }
+
+  @media (min-width: 64rem) {
+    .sidebar {
+      position: sticky;
+      top: 0;
+      align-self: start;
+      justify-content: space-between;
+      height: 100dvh;
+      padding-block: var(--page-padding-block);
+      overflow-y: auto;
+      scrollbar-color: var(--color-border-strong) transparent;
+      scrollbar-width: thin;
+    }
+
+    .identity {
+      grid-template-columns: auto 1fr;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .nav {
+      display: block;
+      margin-block-start: 2.5rem;
+    }
+  }
+
+  /* Short desktop screens (e.g. 1366×768): tighten spacing so the sidebar fits without scrolling. */
+  @media (min-width: 64rem) and (max-height: 56rem) {
+    .sidebar {
+      gap: 1.75rem;
+    }
+
+    .avatar {
+      width: 5rem;
+      height: 5rem;
+    }
+
+    .name {
+      font-size: 2.25rem;
+    }
+
+    .role {
+      margin-block-start: 0.35rem;
+      font-size: var(--text-lg);
+    }
+
+    .tagline {
+      margin-block-start: 1rem;
+    }
+
+    .nav {
+      margin-block-start: 1.75rem;
+    }
+
+    .nav-link {
+      padding-block: 0.32rem;
+    }
+
+    .contacts {
+      gap: 0.4rem 1.5rem;
+    }
+
+    .cv-button {
+      margin-block-start: 1rem;
+    }
+  }
+</style>

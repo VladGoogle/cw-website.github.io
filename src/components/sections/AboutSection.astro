@@ -1,0 +1,26 @@
+---
+import Section from '@/components/ui/Section.astro';
+import { SECTION } from '@/data/navigation';
+import { profile } from '@/data/profile';
+---
+
+<Section section={SECTION.about}>
+  <div class="about" data-reveal>
+    {profile.about.map((paragraph) => (
+      <p>{paragraph}</p>
+    ))}
+  </div>
+</Section>
+
+<style>
+  .about {
+    display: grid;
+    gap: 1rem;
+    max-width: 40rem;
+    font-size: 1.0625rem;
+  }
+
+  .about p:first-child {
+    color: var(--color-text-strong);
+  }
+</style>

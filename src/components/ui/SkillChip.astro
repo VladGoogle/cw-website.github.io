@@ -1,0 +1,59 @@
+---
+import { Icon } from 'astro-icon/components';
+
+import ExternalLink from '@/components/ui/ExternalLink.astro';
+import type { Skill } from '@/types/cv';
+
+interface Props {
+  skill: Skill;
+}
+
+const { skill } = Astro.props;
+---
+
+<ExternalLink href={skill.url} class="skill glow-box" title={`${skill.name} documentation`}>
+  <Icon name={skill.icon} class="skill-icon" aria-hidden="true" />
+  <span>{skill.name}</span>
+</ExternalLink>
+
+<style>
+  .skill {
+    --hover-scale: 1.06;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.45rem 0.9rem 0.45rem 0.7rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-full);
+    background-color: var(--color-surface);
+    color: var(--color-text-strong);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    line-height: 1.2;
+  }
+
+  /* Fixed height, natural width: keeps wide logos (e.g. BullMQ) legible. */
+  .skill-icon {
+    flex: none;
+    width: auto;
+    max-width: 2.1rem;
+    height: 1.1rem;
+    color: var(--color-text);
+    transition:
+      color var(--duration) var(--ease-out),
+      filter var(--duration) var(--ease-out);
+  }
+
+  .skill:focus-visible .skill-icon {
+    color: var(--color-accent);
+    filter: var(--glow-icon);
+  }
+
+  @media (hover: hover) {
+    .skill:hover .skill-icon {
+      color: var(--color-accent);
+      filter: var(--glow-icon);
+    }
+  }
+</style>

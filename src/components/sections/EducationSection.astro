@@ -1,0 +1,121 @@
+---
+import Section from '@/components/ui/Section.astro';
+import Tag from '@/components/ui/Tag.astro';
+import { education, languages } from '@/data/education';
+import { SECTION } from '@/data/navigation';
+---
+
+<Section section={SECTION.education} title="Education & Languages">
+  <div class="grid">
+    {education.map((item) => (
+      <article class="panel" data-reveal>
+        <p class="eyebrow">
+          <time datetime={String(item.startYear)}>{item.startYear}</time>
+          {' – '}
+          <time datetime={String(item.endYear)}>{item.endYear}</time>
+        </p>
+        <h3 class="degree">{item.degree}</h3>
+        <p class="institution">{item.institution}</p>
+        <ul class="focus-areas" role="list" aria-label="Focus areas">
+          {item.focusAreas.map((area) => (
+            <li>
+              <Tag>{area}</Tag>
+            </li>
+          ))}
+        </ul>
+      </article>
+    ))}
+
+    <article class="panel" data-reveal>
+      <p class="eyebrow">Spoken</p>
+      <h3 class="degree">Languages</h3>
+      <dl class="languages">
+        {languages.map((language) => (
+          <div class="language">
+            <dt>{language.name}</dt>
+            <dd>{language.level}</dd>
+          </div>
+        ))}
+      </dl>
+    </article>
+  </div>
+</Section>
+
+<style>
+  .grid {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .panel {
+    padding: 1.4rem 1.5rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background-color: var(--color-surface);
+  }
+
+  .eyebrow {
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .degree {
+    margin-block-start: 0.35rem;
+    font-size: var(--text-lg);
+    font-weight: 600;
+  }
+
+  .institution {
+    color: var(--color-accent);
+    font-size: var(--text-sm);
+  }
+
+  .focus-areas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    margin-block-start: 1.1rem;
+  }
+
+  .languages {
+    display: grid;
+    gap: 0.6rem;
+    margin-block-start: 1rem;
+  }
+
+  .language {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-block-end: 0.6rem;
+    border-bottom: 1px dashed var(--color-border);
+  }
+
+  .language:last-child {
+    padding-block-end: 0;
+    border-bottom: 0;
+  }
+
+  .language dt {
+    color: var(--color-text-strong);
+    font-weight: 500;
+  }
+
+  .language dd {
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  @media (min-width: 48rem) {
+    .grid {
+      grid-template-columns: 3fr 2fr;
+    }
+  }
+</style>

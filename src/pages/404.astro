@@ -1,0 +1,57 @@
+---
+import { profile } from '@/data/profile';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { withBase } from '@/utils/url';
+---
+
+<BaseLayout
+  title={`Page not found — ${profile.fullName}`}
+  description="The page you are looking for does not exist."
+  noindex
+>
+  <main id="content" class="not-found">
+    <p class="code">404</p>
+    <h1 class="title">Page not found</h1>
+    <p>The page you’re looking for doesn’t exist or has been moved.</p>
+    <a href={withBase('/')} class="home glow-box">
+      ← Back to the CV
+    </a>
+  </main>
+</BaseLayout>
+
+<style>
+  .not-found {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    place-content: center;
+    justify-items: center;
+    gap: 0.75rem;
+    min-height: 100dvh;
+    padding: var(--gutter);
+    text-align: center;
+  }
+
+  .code {
+    color: var(--color-accent);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    letter-spacing: 0.2em;
+  }
+
+  .title {
+    font-size: var(--text-display);
+    letter-spacing: -0.02em;
+  }
+
+  .home {
+    margin-block-start: 1rem;
+    padding: 0.7rem 1.2rem;
+    border: 1px solid rgb(var(--accent-rgb) / 0.4);
+    border-radius: var(--radius-md);
+    background-color: var(--color-accent-soft);
+    color: var(--color-accent);
+    font-size: var(--text-sm);
+    font-weight: 600;
+  }
+</style>

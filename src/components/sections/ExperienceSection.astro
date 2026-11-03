@@ -1,0 +1,98 @@
+---
+import ProjectCard from '@/components/cards/ProjectCard.astro';
+import Section from '@/components/ui/Section.astro';
+import { experience } from '@/data/experience';
+import { SECTION } from '@/data/navigation';
+---
+
+<Section section={SECTION.experience}>
+  {experience.map((job) => (
+    <article class="job">
+      <header class="job-header" data-reveal>
+        <h3 class="job-title">
+          {job.role} <span class="job-company">· {job.company}</span>
+        </h3>
+        <p class="job-period">
+          <time datetime={job.start.iso}>{job.start.label}</time>
+          {' – '}
+          {job.end ? <time datetime={job.end.iso}>{job.end.label}</time> : 'Present'}
+        </p>
+      </header>
+
+      <ol class="projects" role="list" aria-label={`Projects at ${job.company}`}>
+        {job.projects.map((project) => (
+          <li class="project-item" data-reveal>
+            <ProjectCard project={project} />
+          </li>
+        ))}
+      </ol>
+    </article>
+  ))}
+</Section>
+
+<style>
+  .job + .job {
+    margin-block-start: 3rem;
+  }
+
+  .job-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.25rem 1rem;
+  }
+
+  .job-title {
+    font-size: var(--text-xl);
+    font-weight: 600;
+  }
+
+  .job-company {
+    color: var(--color-accent);
+  }
+
+  .job-period {
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  /* Vertical timeline connecting the projects of one position. */
+  .projects {
+    position: relative;
+    display: grid;
+    gap: 1.25rem;
+    margin-block-start: 1.5rem;
+    padding-inline-start: 1.5rem;
+  }
+
+  .projects::before {
+    content: '';
+    position: absolute;
+    top: 0.5rem;
+    bottom: 0.5rem;
+    left: 0.3rem;
+    width: 1px;
+    background: linear-gradient(var(--color-border-strong), transparent);
+  }
+
+  .project-item {
+    position: relative;
+  }
+
+  .project-item::before {
+    content: '';
+    position: absolute;
+    top: 1.85rem;
+    left: calc(-1.5rem + 0.3rem - 4px);
+    width: 9px;
+    height: 9px;
+    border: 1px solid var(--color-accent);
+    border-radius: 50%;
+    background-color: var(--color-bg);
+    box-shadow: 0 0 10px rgb(var(--accent-rgb) / 0.45);
+  }
+</style>

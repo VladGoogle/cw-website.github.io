@@ -1,0 +1,32 @@
+---
+/** Soft radial light that follows the pointer on desktop (decorative only). */
+---
+
+<div class="spotlight" data-spotlight aria-hidden="true"></div>
+
+<script>
+  import { initSpotlight } from '@/scripts/spotlight';
+
+  const spotlight = document.querySelector<HTMLElement>('[data-spotlight]');
+  if (spotlight) initSpotlight(spotlight);
+</script>
+
+<style>
+  .spotlight {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0;
+    background: radial-gradient(
+      600px circle at var(--spotlight-x, 50%) var(--spotlight-y, 0%),
+      var(--spotlight-color),
+      transparent 80%
+    );
+    transition: opacity 600ms var(--ease-out);
+  }
+
+  .spotlight[data-active] {
+    opacity: 1;
+  }
+</style>

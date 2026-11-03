@@ -1,0 +1,112 @@
+---
+import { Image } from 'astro:assets';
+import { Icon } from 'astro-icon/components';
+
+import ExternalLink from '@/components/ui/ExternalLink.astro';
+import type { Certification } from '@/types/cv';
+
+interface Props {
+  certification: Certification;
+}
+
+const { certification } = Astro.props;
+---
+
+<ExternalLink
+  href={certification.credlyUrl}
+  class="certification glow-box"
+  title={`Verify “${certification.name}” on Credly`}
+>
+  <Image src={certification.badge} alt="" width={96} height={96} densities={[1, 2]} class="badge" />
+  <span class="body">
+    <h3 class="name">{certification.name}</h3>
+    <span class="issuer">{certification.issuer}</span>
+    <span class="dates">
+      <span>
+        Issued <time datetime={certification.issued.iso}>{certification.issued.label}</time>
+      </span>
+      <span aria-hidden="true">·</span>
+      <span>
+        Expires <time datetime={certification.expires.iso}>{certification.expires.label}</time>
+      </span>
+    </span>
+    <span class="verify">
+      Verify on Credly
+      <Icon name="tabler:arrow-up-right" class="verify-icon" aria-hidden="true" />
+    </span>
+  </span>
+</ExternalLink>
+
+<style>
+  .certification {
+    display: grid;
+    grid-template-columns: 5rem 1fr;
+    align-items: center;
+    gap: 1.1rem;
+    height: 100%;
+    padding: 1.1rem 1.25rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background-color: var(--color-surface);
+  }
+
+  .badge {
+    width: 5rem;
+    height: 5rem;
+    filter: drop-shadow(0 6px 14px rgb(0 0 0 / 0.35));
+  }
+
+  .body {
+    display: grid;
+    gap: 0.2rem;
+  }
+
+  .name {
+    font-size: var(--text-base);
+    font-weight: 600;
+  }
+
+  .issuer,
+  .dates {
+    font-size: var(--text-sm);
+  }
+
+  .dates {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 0.4rem;
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+  }
+
+  .verify {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    margin-block-start: 0.4rem;
+    color: var(--color-accent);
+    font-size: var(--text-sm);
+    font-weight: 500;
+  }
+
+  .verify-icon {
+    width: 1rem;
+    height: 1rem;
+    transition:
+      translate var(--duration) var(--ease-out),
+      filter var(--duration) var(--ease-out);
+  }
+
+  .certification:focus-visible .verify-icon {
+    translate: 2px -2px;
+    filter: var(--glow-icon);
+  }
+
+  @media (hover: hover) {
+    .certification:hover .verify-icon {
+      translate: 2px -2px;
+      filter: var(--glow-icon);
+    }
+  }
+</style>

@@ -1,0 +1,70 @@
+---
+import { Image } from 'astro:assets';
+
+import ExternalLink from '@/components/ui/ExternalLink.astro';
+import type { Book } from '@/types/cv';
+import { formatList } from '@/utils/format';
+import { displayHost } from '@/utils/url';
+
+interface Props {
+  book: Book;
+}
+
+const { book } = Astro.props;
+---
+
+<ExternalLink
+  href={book.url}
+  class="book glow-box"
+  title={`“${book.title}” on ${displayHost(book.url)}`}
+>
+  <Image
+    src={book.cover}
+    alt=""
+    widths={[180, 360]}
+    sizes="(min-width: 40rem) 180px, 45vw"
+    class="cover"
+  />
+  <span class="title">{book.title}</span>
+  <span class="authors">{formatList(book.authors)}</span>
+</ExternalLink>
+
+<style>
+  .book {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    height: 100%;
+    padding: 0.75rem 0.75rem 0.9rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background-color: var(--color-surface);
+  }
+
+  .cover {
+    width: 100%;
+    aspect-ratio: 400 / 525;
+    margin-block-end: 0.4rem;
+    object-fit: cover;
+    border-radius: var(--radius-sm);
+    box-shadow: 0 10px 24px -10px rgb(0 0 0 / 0.6);
+  }
+
+  .title {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    color: var(--color-text-strong);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    line-height: 1.35;
+  }
+
+  .authors {
+    color: var(--color-text-muted);
+    font-size: var(--text-xs);
+    line-height: 1.45;
+  }
+</style>
